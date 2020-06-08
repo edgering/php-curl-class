@@ -40,6 +40,7 @@ class Curl
     public $completeCallback = null;
     public $fileHandle = null;
     public $downloadFileName = null;
+    public $downloadAllowResume = true;
 
     public $attempts = 0;
     public $retries = 0;
@@ -306,7 +307,7 @@ class Curl
             $this->downloadFileName = $download_filename;
 
             // Attempt to resume download only when a temporary download file exists and is not empty.
-            if (is_file($download_filename) && $filesize = filesize($download_filename)) {
+            if (is_file($download_filename) && $filesize = filesize($download_filename) && $this->downloadAllowResume) {
                 $first_byte_position = $filesize;
                 $range = $first_byte_position . '-';
                 $this->setRange($range);
